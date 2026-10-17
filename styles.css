@@ -1,0 +1,194 @@
+:root {
+  --color-principal: #EE00FF;
+  --color-fondo: #FFFFFF;
+  --color-texto: #333333;
+  --color-bordes: #DDDDDD;
+  --color-gris-claro: #F9F9F9;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  padding: 30px 20px;
+}
+
+.contenedor-principal {
+  max-width: 750px;
+  margin: 0 auto;
+  background: var(--color-fondo);
+  padding: 30px;
+  border-radius: 20px;
+  border: 2px solid var(--color-principal);
+  box-shadow: 0 8px 25px rgba(238, 0, 255, 0.1);
+}
+
+.titulo-principal {
+  color: var(--color-principal);
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+h2 {
+  color: var(--color-principal);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.subtitulo-resultados {
+  color: var(--color-principal);
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+}
+
+.oculto {
+  display: none !important;
+}
+
+/* Botones con puntas redondeadas */
+.botones-inicio {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.btn-principal {
+  background-color: var(--color-principal);
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: opacity 0.3s, transform 0.2s;
+  box-shadow: 0 4px 10px rgba(238, 0, 255, 0.3);
+}
+
+.btn-principal:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.btn-secundario {
+  background-color: transparent;
+  color: var(--color-principal);
+  border: 2px solid var(--color-principal);
+  padding: 10px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-secundario:hover {
+  background-color: var(--color-principal);
+  color: white;
+}
+
+.btn-volver {
+  background: none;
+  border: none;
+  color: var(--color-principal);
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 15px;
+  font-size: 0.95rem;
+}
+
+.centrar-btn {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+/* Campos y formularios con rectángulos redondeados */
+.fila-grupo {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.campo {
+  flex-grow: 1;
+  margin-bottom: 15px;
+}
+
+.campo-fecha-salida {
+  max-width: 50%;
+  margin: 0 auto 15px auto;
+  text-align: center;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+input[type="text"], select, textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 12px;
+  border: 1.5px solid var(--color-bordes);
+  background-color: var(--color-gris-claro);
+  font-size: 0.95rem;
+  color: var(--color-texto);
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+input[type="text"]:focus, select:focus, textarea:focus {
+  border-color: var(--color-principal);
+}
+
+.textarea-convertido {
+  background-color: #fafafa;
+  font-family: inherit;
+  resize: vertical;
+  white-space: pre-wrap;
+  border-color: var(--color-principal);
+}
+
+.seccion-conversion, .seccion-resultados {
+  background: var(--color-gris-claro);
+  padding: 20px;
+  border-radius: 15px;
+  margin-top: 20px;
+  border: 1px solid var(--color-bordes);
+}
+
+.botones-accion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.mensaje-estado {
+  text-align: center;
+  margin-top: 10px;
+  font-weight: bold;
+  color: var(--color-principal);
+}
+
+.card-resultado-item {
+  background: white;
+  border-left: 4px solid var(--color-principal);
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  white-space: pre-wrap;
+  font-size: 0.9rem;
+}

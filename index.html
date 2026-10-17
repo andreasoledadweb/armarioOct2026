@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestor de Armario y Atuendos</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="contenedor-principal">
+    
+    <!-- PRIMERA INTERACCIÓN: INICIO -->
+    <div id="vista-inicio" class="vista-seccion">
+      <h1 class="titulo-principal">¿Qué deseas hacer ahora?</h1>
+      <div class="botones-inicio">
+        <button class="btn-principal" onclick="cambiarVista('entrada')">Entrada</button>
+        <button class="btn-principal" onclick="cambiarVista('salida')">Salida</button>
+      </div>
+    </div>
+
+    <!-- VISTA 1: ENTRADA -->
+    <div id="vista-entrada" class="vista-seccion oculto">
+      <button class="btn-volver" onclick="cambiarVista('inicio')">← Volver al menú</button>
+      <h2>Registrar Entrada</h2>
+      
+      <form id="form-entrada" onsubmit="event.preventDefault();">
+        
+        <!-- Fecha -->
+        <div class="campo">
+          <label for="input-fecha">Fecha (formato dd/mm/aa):</label>
+          <input type="text" id="input-fecha" placeholder="Ej. 25/10/26 (Opcional, dejar vacío para SF)">
+        </div>
+
+        <!-- Desplegables de Sheets: Destino y Pants -->
+        <div class="fila-grupo">
+          <div class="campo">
+            <label for="select-destino">Destino:</label>
+            <select id="select-destino">
+              <option value="">-- Cargando --</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label for="select-pants">Pants:</label>
+            <select id="select-pants">
+              <option value="">-- Cargando --</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Textos: Shirt y Jersey -->
+        <div class="fila-grupo">
+          <div class="campo">
+            <label for="input-shirt">Shirt:</label>
+            <input type="text" id="input-shirt" placeholder="Descripción de camisa...">
+          </div>
+          <div class="campo">
+            <label for="input-jersey">Jersey:</label>
+            <input type="text" id="input-jersey" placeholder="Descripción de jersey...">
+          </div>
+        </div>
+
+        <!-- Desplegables de Sheets: Shoes y Bag -->
+        <div class="fila-grupo">
+          <div class="campo">
+            <label for="select-shoes">Shoes:</label>
+            <select id="select-shoes">
+              <option value="">-- Cargando --</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label for="select-bag">Bag:</label>
+            <select id="select-bag">
+              <option value="">-- Cargando --</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Texto: Hair -->
+        <div class="campo">
+          <label for="input-hair">Hair:</label>
+          <input type="text" id="input-hair" placeholder="Estilo de cabello...">
+        </div>
+
+        <!-- Botón Convertir -->
+        <div class="centrar-btn">
+          <button type="button" class="btn-principal" onclick="convertirDatos()">Convertir</button>
+        </div>
+
+        <!-- Área de Conversión (Aparece al hacer click en convertir) -->
+        <div id="area-conversion" class="oculto seccion-conversion">
+          <label>Datos convertidos (con emojis):</label>
+          <textarea id="texto-convertido-final" rows="10" readonly class="textarea-convertido"></textarea>
+          
+          <div class="botones-accion">
+            <button type="button" class="btn-secundario" onclick="limpiarEntrada()">Limpiar todo</button>
+            <button type="button" class="btn-principal" onclick="guardarEnSheetsArmario()">Guardar en sheets</button>
+          </div>
+          <p id="estado-guardado-entrada" class="mensaje-estado"></p>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- VISTA 2: SALIDA (FILTROS) -->
+    <div id="vista-salida" class="vista-seccion oculto">
+      <button class="btn-volver" onclick="cambiarVista('inicio')">← Volver al menú</button>
+      <h2>Filtrar Datos</h2>
+
+      <!-- Fecha centrada superior -->
+      <div class="campo campo-fecha-salida">
+        <label for="filtro-fecha">Fecha:</label>
+        <input type="text" id="filtro-fecha" placeholder="Filtrar por fecha...">
+      </div>
+
+      <!-- Los demás de dos en dos -->
+      <div class="fila-grupo">
+        <div class="campo">
+          <label for="filtro-destino">Destino:</label>
+          <select id="filtro-destino">
+            <option value="">-- Todos --</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label for="filtro-pants">Pants:</label>
+          <select id="filtro-pants">
+            <option value="">-- Todos --</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="fila-grupo">
+        <div class="campo">
+          <label for="filtro-shoes">Shoes:</label>
+          <select id="filtro-shoes">
+            <option value="">-- Todos --</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label for="filtro-bag">Bag:</label>
+          <select id="filtro-bag">
+            <option value="">-- Todos --</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Botones de Salida -->
+      <div class="botones-accion">
+        <button type="button" class="btn-secundario" onclick="limpiarFiltrosSalida()">Limpiar todo</button>
+        <button type="button" class="btn-principal" onclick="ejecutarBusquedaSalida()">Buscar</button>
+      </div>
+
+      <!-- Opciones de búsqueda que aparecen SOLO tras hacer click en buscar -->
+      <div id="resultados-busqueda-container" class="oculto seccion-resultados">
+        <h3 class="subtitulo-resultados">Resultados de la búsqueda:</h3>
+        <div id="lista-resultados-salida">
+          <!-- Aquí se cargarán dinámicamente los elementos filtrados -->
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
