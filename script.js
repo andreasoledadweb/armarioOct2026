@@ -128,7 +128,7 @@ async function guardarEnSheetsArmario() {
   }
 }
 
-// Lógica de Salida / Filtros con Rango de Fechas (Calendarios)
+// Lógica de Salida / Filtros con Rango de Fechas Corregido
 function limpiarFiltrosSalida() {
   document.getElementById("filtro-fecha-desde").value = "";
   document.getElementById("filtro-fecha-hasta").value = "";
@@ -140,8 +140,8 @@ function limpiarFiltrosSalida() {
 }
 
 function ejecutarBusquedaSalida() {
-  const valDesde = document.getElementById("filtro-fecha-desde").value; // Viene en formato "aaaa-mm-dd" del input date
-  const valHasta = document.getElementById("filtro-fecha-hasta").value; // Viene en formato "aaaa-mm-dd" del input date
+  const valDesde = document.getElementById("filtro-fecha-desde").value; 
+  const valHasta = document.getElementById("filtro-fecha-hasta").value; 
   
   const destinoFiltro = document.getElementById("filtro-destino").value.toLowerCase().trim();
   const pantsFiltro = document.getElementById("filtro-pants").value.toLowerCase().trim();
@@ -156,7 +156,6 @@ function ejecutarBusquedaSalida() {
 
   const registros = window.registrosTotalesArmario || [];
 
-  // Función para convertir fecha de texto guardado "dd/mm/aa" a objeto Date
   function parsearFechaArmario(textoFecha) {
     if (!textoFecha || textoFecha === "SF") return null;
     const partes = textoFecha.split("/");
@@ -168,14 +167,14 @@ function ejecutarBusquedaSalida() {
     return new Date(anio, mes, dia);
   }
 
-  // Objetos Date para el filtro de calendario (los inputs date devuelven aaaa-mm-dd exactos para el objeto Date)
+  // Creamos los objetos de fecha ignorando la diferencia horaria local fijando las horas base
   const fechaDesdeObj = valDesde ? new Date(valDesde + "T00:00:00") : null;
   const fechaHastaObj = valHasta ? new Date(valHasta + "T23:59:59") : null;
 
   const filtrados = registros.filter(reg => {
     const regLower = reg.toLowerCase();
 
-    // 1. Filtrar por Rango de Fechas del Calendario
+    // 1. Filtrar estrictamente por Rango de Fechas si el usuario seleccionó alguna
     let cumpleFecha = true;
     if (fechaDesdeObj || fechaHastaObj) {
       const lineas = reg.split("\n");
@@ -189,6 +188,7 @@ function ejecutarBusquedaSalida() {
       
       const fechaRegObj = parsearFechaArmario(fechaRegStr);
 
+      // Si el registro no tiene fecha válida o dice "SF", no cumple con el filtro de fecha solicitado
       if (!fechaRegObj) {
         cumpleFecha = false;
       } else {
@@ -207,7 +207,7 @@ function ejecutarBusquedaSalida() {
   });
 
   if (filtrados.length === 0) {
-    listaContenedor.innerHTML = '<p style="text-align: center; color: #666;">No se encontraron registros que coincidan con los filtros y el rango de fechas.</p>';
+    listaContenedor.innerHTML = '<p style="text-align: center; color: #666;">No se encontraron registros que coincidan con los filtros y las fechas seleccionadas.</p>';
     return;
   }
 
@@ -217,4 +217,4 @@ function ejecutarBusquedaSalida() {
     div.textContent = reg;
     listaContenedor.appendChild(div);
   });
-}
+      }
