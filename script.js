@@ -1,4 +1,3 @@
-// Pega aquí la URL de la Aplicación web de tu Apps Script (la que termina en /exec)
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzzkU969B-wGjgtz629fTk1aJ_hrUQosvwLvIIiVpVXzgCJQIpXA2bjeXmlql1KIsGHwA/exec"; 
 
 // Estructura fija de los 8 emojis solicitados
@@ -80,7 +79,6 @@ function convertirDatos() {
   const bag = document.getElementById("select-bag").value || "";
   const hair = document.getElementById("input-hair").value || "";
 
-  // Construir el texto combinado con los 8 emojis uno debajo del otro
   const textoConvertido = 
     `${EMOJIS_ESTRUCTURA[0]} ${fechaInput}\n` +
     `${EMOJIS_ESTRUCTURA[1]} ${destino}\n` +
@@ -121,7 +119,7 @@ async function guardarEnSheetsArmario() {
     if (resultado.status === "success") {
       estado.innerText = "¡Guardado exitosamente en la hoja armario!";
       limpiarEntrada();
-      cargarOpcionesDesplegables(); // Recargar datos actualizados
+      cargarOpcionesDesplegables();
     } else {
       estado.innerText = "Error al guardar.";
     }
@@ -130,7 +128,7 @@ async function guardarEnSheetsArmario() {
   }
 }
 
-// Lógica de Salida / Filtros con Rango de Fechas
+// Lógica de Salida / Filtros con Rango de Fechas (Calendarios)
 function limpiarFiltrosSalida() {
   document.getElementById("filtro-fecha-desde").value = "";
   document.getElementById("filtro-fecha-hasta").value = "";
@@ -142,8 +140,8 @@ function limpiarFiltrosSalida() {
 }
 
 function ejecutarBusquedaSalida() {
-  const strDesde = document.getElementById("filtro-fecha-desde").value.trim();
-  const strHasta = document.getElementById("filtro-fecha-hasta").value.trim();
+  const valDesde = document.getElementById("filtro-fecha-desde").value; // Viene en formato "aaaa-mm-dd" del input date
+  const valHasta = document.getElementById("filtro-fecha-hasta").value; // Viene en formato "aaaa-mm-dd" del input date
   
   const destinoFiltro = document.getElementById("filtro-destino").value.toLowerCase().trim();
   const pantsFiltro = document.getElementById("filtro-pants").value.toLowerCase().trim();
@@ -158,8 +156,9 @@ function ejecutarBusquedaSalida() {
 
   const registros = window.registrosTotalesArmario || [];
 
-  function parsearFecha(textoFecha) {
-    if (!textoFecha) return null;
+  // Función para convertir fecha de texto guardado "dd/mm/aa" a objeto Date
+  function parsearFechaArmario(textoFecha) {
+    if (!textoFecha || textoFecha === "SF") return null;
     const partes = textoFecha.split("/");
     if (partes.length !== 3) return null;
     let dia = parseInt(partes[0], 10);
@@ -169,13 +168,14 @@ function ejecutarBusquedaSalida() {
     return new Date(anio, mes, dia);
   }
 
-  const fechaDesdeObj = parsearFecha(strDesde);
-  const fechaHastaObj = parsearFecha(strHasta);
+  // Objetos Date para el filtro de calendario (los inputs date devuelven aaaa-mm-dd exactos para el objeto Date)
+  const fechaDesdeObj = valDesde ? new Date(valDesde + "T00:00:00") : null;
+  const fechaHastaObj = valHasta ? new Date(valHasta + "T23:59:59") : null;
 
   const filtrados = registros.filter(reg => {
     const regLower = reg.toLowerCase();
 
-    // 1. Filtrar por Rango de Fechas
+    // 1. Filtrar por Rango de Fechas del Calendario
     let cumpleFecha = true;
     if (fechaDesdeObj || fechaHastaObj) {
       const lineas = reg.split("\n");
@@ -187,7 +187,7 @@ function ejecutarBusquedaSalida() {
         }
       }
       
-      const fechaRegObj = parsearFecha(fechaRegStr);
+      const fechaRegObj = parsearFechaArmario(fechaRegStr);
 
       if (!fechaRegObj) {
         cumpleFecha = false;
