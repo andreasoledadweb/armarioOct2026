@@ -130,9 +130,10 @@ async function guardarEnSheetsArmario() {
   }
 }
 
-// Lógica de Salida / Filtros
+// Lógica de Salida / Filtros con Rango de Fechas
 function limpiarFiltrosSalida() {
-  document.getElementById("filtro-fecha").value = "";
+  document.getElementById("filtro-fecha-desde").value = "";
+  document.getElementById("filtro-fecha-hasta").value = "";
   document.getElementById("filtro-destino").value = "";
   document.getElementById("filtro-pants").value = "";
   document.getElementById("filtro-shoes").value = "";
@@ -141,7 +142,9 @@ function limpiarFiltrosSalida() {
 }
 
 function ejecutarBusquedaSalida() {
-  const fechaFiltro = document.getElementById("filtro-fecha").value.toLowerCase().trim();
+  const strDesde = document.getElementById("filtro-fecha-desde").value.trim();
+  const strHasta = document.getElementById("filtro-fecha-hasta").value.trim();
+  
   const destinoFiltro = document.getElementById("filtro-destino").value.toLowerCase().trim();
   const pantsFiltro = document.getElementById("filtro-pants").value.toLowerCase().trim();
   const shoesFiltro = document.getElementById("filtro-shoes").value.toLowerCase().trim();
@@ -155,9 +158,46 @@ function ejecutarBusquedaSalida() {
 
   const registros = window.registrosTotalesArmario || [];
 
+  function parsearFecha(textoFecha) {
+    if (!textoFecha) return null;
+    const partes = textoFecha.split("/");
+    if (partes.length !== 3) return null;
+    let dia = parseInt(partes[0], 10);
+    let mes = parseInt(partes[1], 10) - 1;
+    let anio = parseInt(partes[2], 10);
+    if (anio < 100) anio += 2000;
+    return new Date(anio, mes, dia);
+  }
+
+  const fechaDesdeObj = parsearFecha(strDesde);
+  const fechaHastaObj = parsearFecha(strHasta);
+
   const filtrados = registros.filter(reg => {
     const regLower = reg.toLowerCase();
-    const cumpleFecha = !fechaFiltro || regLower.includes(fechaFiltro);
+
+    // 1. Filtrar por Rango de Fechas
+    let cumpleFecha = true;
+    if (fechaDesdeObj || fechaHastaObj) {
+      const lineas = reg.split("\n");
+      let fechaRegStr = "";
+      for (let l of lineas) {
+        if (l.includes("🗓️")) {
+          fechaRegStr = l.replace("🗓️", "").trim();
+          break;
+        }
+      }
+      
+      const fechaRegObj = parsearFecha(fechaRegStr);
+
+      if (!fechaRegObj) {
+        cumpleFecha = false;
+      } else {
+        if (fechaDesdeObj && fechaRegObj < fechaDesdeObj) cumpleFecha = false;
+        if (fechaHastaObj && fechaRegObj > fechaHastaObj) cumpleFecha = false;
+      }
+    }
+
+    // 2. Filtrar por los demás elementos desplegables
     const cumpleDestino = !destinoFiltro || regLower.includes(destinoFiltro);
     const cumplePants = !pantsFiltro || regLower.includes(pantsFiltro);
     const cumpleShoes = !shoesFiltro || regLower.includes(shoesFiltro);
@@ -167,7 +207,7 @@ function ejecutarBusquedaSalida() {
   });
 
   if (filtrados.length === 0) {
-    listaContenedor.innerHTML = '<p style="text-align: center; color: #666;">No se encontraron registros que coincidan con los filtros.</p>';
+    listaContenedor.innerHTML = '<p style="text-align: center; color: #666;">No se encontraron registros que coincidan con los filtros y el rango de fechas.</p>';
     return;
   }
 
