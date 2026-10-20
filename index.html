@@ -102,15 +102,21 @@
       </form>
     </div>
 
-    <!-- VISTA 2: SALIDA (FILTROS) -->
+    <!-- VISTA 2: SALIDA (FILTROS CON RANGO DE FECHAS) -->
     <div id="vista-salida" class="vista-seccion oculto">
       <button class="btn-volver" onclick="cambiarVista('inicio')">← Volver al menú</button>
       <h2>Filtrar Datos</h2>
 
-      <!-- Fecha centrada superior -->
-      <div class="campo campo-fecha-salida">
-        <label for="filtro-fecha">Fecha:</label>
-        <input type="text" id="filtro-fecha" placeholder="Filtrar por fecha...">
+      <!-- Rango de Fechas centrado superior -->
+      <div class="fila-grupo campo-fecha-salida">
+        <div class="campo">
+          <label for="filtro-fecha-desde">Fecha Desde (dd/mm/aa):</label>
+          <input type="text" id="filtro-fecha-desde" placeholder="Ej. 16/10/26">
+        </div>
+        <div class="campo">
+          <label for="filtro-fecha-hasta">Fecha Hasta (dd/mm/aa):</label>
+          <input type="text" id="filtro-fecha-hasta" placeholder="Ej. 19/10/26">
+        </div>
       </div>
 
       <!-- Los demás de dos en dos -->
