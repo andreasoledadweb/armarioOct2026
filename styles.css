@@ -1,15 +1,32 @@
 :root {
   --color-principal: #EE00FF;
   --color-fondo: #FFFFFF;
+  --color-contenedor: #FFFFFF;
   --color-texto: #333333;
+  --color-label: #555555;
   --color-bordes: #DDDDDD;
   --color-gris-claro: #F9F9F9;
+  --color-input-bg: #F9F9F9;
+  --color-card-bg: #FFFFFF;
+}
+
+/* Variables cuando se activa el modo nocturno */
+body.modo-oscuro {
+  --color-fondo: #121212;
+  --color-contenedor: #1E1E1E;
+  --color-texto: #FFFFFF;
+  --color-label: #DDDDDD;
+  --color-bordes: #444444;
+  --color-gris-claro: #2A2A2A;
+  --color-input-bg: #252525;
+  --color-card-bg: #252525;
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 
 body {
@@ -19,10 +36,34 @@ body {
   padding: 30px 20px;
 }
 
+.header-superior {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.btn-modo-toggle {
+  background: var(--color-gris-claro);
+  border: 1.5px solid var(--color-bordes);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.btn-modo-toggle:hover {
+  border-color: var(--color-principal);
+}
+
 .contenedor-principal {
   max-width: 750px;
   margin: 0 auto;
-  background: var(--color-fondo);
+  background: var(--color-contenedor);
   padding: 30px;
   border-radius: 20px;
   border: 2px solid var(--color-principal);
@@ -124,41 +165,41 @@ h2 {
 }
 
 .campo-fecha-salida {
-  max-width: 50%;
+  max-width: 100%;
   margin: 0 auto 15px auto;
-  text-align: center;
 }
 
 label {
   display: block;
   margin-bottom: 6px;
   font-weight: 600;
-  color: #555;
+  color: var(--color-label);
   font-size: 0.9rem;
 }
 
-input[type="text"], select, textarea {
+input[type="text"], input[type="date"], select, textarea {
   width: 100%;
   padding: 12px 15px;
   border-radius: 12px;
   border: 1.5px solid var(--color-bordes);
-  background-color: var(--color-gris-claro);
+  background-color: var(--color-input-bg);
   font-size: 0.95rem;
   color: var(--color-texto);
   outline: none;
   transition: border-color 0.3s;
 }
 
-input[type="text"]:focus, select:focus, textarea:focus {
+input[type="text"]:focus, input[type="date"]:focus, select:focus, textarea:focus {
   border-color: var(--color-principal);
 }
 
 .textarea-convertido {
-  background-color: #fafafa;
+  background-color: var(--color-input-bg);
   font-family: inherit;
   resize: vertical;
   white-space: pre-wrap;
   border-color: var(--color-principal);
+  color: var(--color-texto);
 }
 
 .seccion-conversion, .seccion-resultados {
@@ -184,11 +225,15 @@ input[type="text"]:focus, select:focus, textarea:focus {
 }
 
 .card-resultado-item {
-  background: white;
+  background: var(--color-card-bg);
   border-left: 4px solid var(--color-principal);
   padding: 12px;
   border-radius: 8px;
   margin-bottom: 10px;
   white-space: pre-wrap;
   font-size: 0.9rem;
+  color: var(--color-texto);
+  border-top: 1px solid var(--color-bordes);
+  border-right: 1px solid var(--color-bordes);
+  border-bottom: 1px solid var(--color-bordes);
 }
