@@ -16,6 +16,15 @@ document.addEventListener("DOMContentLoaded", () => {
   cargarOpcionesDesplegables();
 });
 
+// Función para alternar modo nocturno / diurno (sin guardarlo en memoria)
+function toggleModoOscuro() {
+  document.body.classList.toggle("modo-oscuro");
+  const esOscuro = document.body.classList.contains("modo-oscuro");
+  
+  // Cambiar el icono del botón
+  document.getElementById("icono-modo").innerText = esOscuro ? "☀️" : "🌙";
+}
+
 function cambiarVista(vista) {
   document.getElementById("vista-inicio").classList.add("oculto");
   document.getElementById("vista-entrada").classList.add("oculto");
@@ -128,7 +137,7 @@ async function guardarEnSheetsArmario() {
   }
 }
 
-// Lógica de Salida / Filtros con Rango de Fechas Corregido
+// Lógica de Salida / Filtros con Rango de Fechas
 function limpiarFiltrosSalida() {
   document.getElementById("filtro-fecha-desde").value = "";
   document.getElementById("filtro-fecha-hasta").value = "";
@@ -167,14 +176,12 @@ function ejecutarBusquedaSalida() {
     return new Date(anio, mes, dia);
   }
 
-  // Creamos los objetos de fecha ignorando la diferencia horaria local fijando las horas base
   const fechaDesdeObj = valDesde ? new Date(valDesde + "T00:00:00") : null;
   const fechaHastaObj = valHasta ? new Date(valHasta + "T23:59:59") : null;
 
   const filtrados = registros.filter(reg => {
     const regLower = reg.toLowerCase();
 
-    // 1. Filtrar estrictamente por Rango de Fechas si el usuario seleccionó alguna
     let cumpleFecha = true;
     if (fechaDesdeObj || fechaHastaObj) {
       const lineas = reg.split("\n");
@@ -188,7 +195,6 @@ function ejecutarBusquedaSalida() {
       
       const fechaRegObj = parsearFechaArmario(fechaRegStr);
 
-      // Si el registro no tiene fecha válida o dice "SF", no cumple con el filtro de fecha solicitado
       if (!fechaRegObj) {
         cumpleFecha = false;
       } else {
@@ -197,7 +203,6 @@ function ejecutarBusquedaSalida() {
       }
     }
 
-    // 2. Filtrar por los demás elementos desplegables
     const cumpleDestino = !destinoFiltro || regLower.includes(destinoFiltro);
     const cumplePants = !pantsFiltro || regLower.includes(pantsFiltro);
     const cumpleShoes = !shoesFiltro || regLower.includes(shoesFiltro);
@@ -218,3 +223,4 @@ function ejecutarBusquedaSalida() {
     listaContenedor.appendChild(div);
   });
       }
+                                     
