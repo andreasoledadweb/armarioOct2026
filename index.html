@@ -10,6 +10,13 @@
 
   <div class="contenedor-principal">
     
+    <!-- Botón flotante superior para cambiar Modo Nocturno / Diurno -->
+    <div class="header-superior">
+      <button class="btn-modo-toggle" onclick="toggleModoOscuro()" title="Cambiar modo nocturno/diurno">
+        <span id="icono-modo">🌙</span>
+      </button>
+    </div>
+
     <!-- PRIMERA INTERACCIÓN: INICIO -->
     <div id="vista-inicio" class="vista-seccion">
       <h1 class="titulo-principal">¿Qué deseas hacer ahora?</h1>
@@ -102,7 +109,7 @@
       </form>
     </div>
 
-    <!-- VISTA 2: SALIDA (FILTROS CON CALENDARIO PARA RANGO DE FECHAS) -->
+    <!-- VISTA 2: SALIDA (FILTROS CON RANGO DE FECHAS) -->
     <div id="vista-salida" class="vista-seccion oculto">
       <button class="btn-volver" onclick="cambiarVista('inicio')">← Volver al menú</button>
       <h2>Filtrar Datos</h2>
